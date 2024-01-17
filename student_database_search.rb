@@ -1,22 +1,23 @@
 require 'csv'
 require 'byebug'
 
+
 def csv_data
   @array ||= []
 
   if @array.length.zero?
     CSV.foreach(("students_data.csv"), headers: true, col_sep: ",") do |row|
       @array << row
+    end
   end
-end
   @array
 end
 
 def all_academic_periods
   csv_data
 end
-#puts all_academic_periods.compact
- all_academic_periods.compact
+
+p all_academic_periods.compact
 # ==================================================================================
 
 def count_male_and_female
@@ -24,27 +25,27 @@ def count_male_and_female
   array2 = []
 
   csv_data.each do |row|
-    if row[5] == "M"
-      array <<  row[5].length
+    if row["gender"] == "M"
+      array <<  row["gender"].length
     end
-    if row[5] == "F"
-      array2 << row[5].length
+    if row["gender"] == "F"
+      array2 << row["gender"].length
     end
   end
 
   "Total male are #{array.length} and total female are #{array2.length}"
 end
-#puts count_male_and_female
-count_male_and_female
+
+p count_male_and_female
 #=================================================================================
-# options can have keys like last_name, email, city, state
-# operator can have values like '>', '<', '='
-# options: {last_name: 'azher', operator: '>'}
+
+# args can have keys like last_name, email, city, state
+# args: {last_name: 'azher')
 def search_by(args:)
-  result = []
   expected_keys = [:last_name, :email, :hs_city, :hs_state]
-  #expected_operators = ['>']
-  return 'Unexpected args' unless expected_keys.include?(args.keys.first) # || expected_operators.include?(expected_operators.first)
+  return 'Unexpected args' unless expected_keys.include?(args.keys.first)
+
+  result = []
   csv_data.each do |row|
     if row[args.keys.first.to_s] == args.values.first 
       result << row.to_s
@@ -52,19 +53,14 @@ def search_by(args:)
   end
   result.join(" ")
 end
-  # p search_by(args: {last_name: "Doe"})
-  # p search_by(args: {hs_city: "Denver"})
-  # p search_by(args: {email: "jdoe@example.com"})
-  # p search_by(args: {hs_state: "New York"})
-  # p search_by(args: {hs_gpa: ">"})
 
-# expect(search_by(last_name: 'azher', operator: '=')).to eq('Azher')
-# array3 = []
-# CSV.foreach(("students_data.csv"), headers: true, col_sep: ",") do |row|
-#     res = row.select{|col, r| print col} 
-# end
-#p array3.compact
+p search_by(args: {last_name: "Doe"})
+p search_by(args: {hs_city: "Denver"})
+p search_by(args: {email: "jdoe@example.com"})
+p search_by(args: {hs_state: "New York"})
+p search_by(args: {hs_gpa: ">"})
 
+#=================================================================================
 def search_by_gpa(hs_gpa:, operator:)
   output = []
   csv_data.each do |row|
@@ -93,7 +89,8 @@ def search_by_gpa(hs_gpa:, operator:)
     end
   output
 end
-  p search_by_gpa(hs_gpa: "4..5", operator: "..")
+
+p search_by_gpa(hs_gpa: "4..5", operator: "..")
 
   
   
