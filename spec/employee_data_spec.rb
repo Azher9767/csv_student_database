@@ -5,7 +5,6 @@ require 'byebug'
 RSpec.describe "employee data" do
   def csv_data
     @array ||= []
-
     if @array.length.zero?
       CSV.foreach(("employee_data.csv"), headers: true, col_sep: ",") do |row|
         @array << row
@@ -13,6 +12,7 @@ RSpec.describe "employee data" do
     end
     @array
   end
+
 # Identify employees who joined before 2020 and have a salary above $75,000
   context "employee information" do
     def employee_info
@@ -26,8 +26,8 @@ RSpec.describe "employee data" do
         end
       data
     end 
-    it "Identify employee's joined date & salary" do 
 
+    it "Identify employee's joined date & salary" do 
       expect(employee_info).to eq([])
     end
   end
